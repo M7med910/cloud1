@@ -16,7 +16,6 @@ $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
 $username = 'm';
 $password = '11111111nN';
-
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("فشل الاتصال: " . $conn->connect_error);
