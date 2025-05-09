@@ -4,7 +4,7 @@ session_start();
 require 'track-visit.php';
 
 if (isset($_SESSION['user_id'])) {
-   $host = 'n11111111.mysql.database.azure.com';
+$host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
 port=3306;
 $username = 'm';
