@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auction_id = (int) $_POST['auction_id'];
     $bid_amount = (float) $_POST['bid_amount'];
 
-    $host = 'sql200.infinityfree.com';
-    $dbname = 'if0_38543174_my_db';
-    $username = 'if0_38543174';
-    $password = 'MDH6WuEkvPyL';
+$host = 'n11111111.mysql.database.azure.com';
+$dbname = 'newschema';
+$username = 'm';
+$password = '11111111nN';
 
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
