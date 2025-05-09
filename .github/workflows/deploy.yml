@@ -1,0 +1,26 @@
+name: Deploy PHP app to Azure App Service
+
+on:
+  push:
+    branches:
+      - main  # سيتم تنفيذ الـ workflow عند الدفع إلى فرع main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # سحب الكود من مستودع GitHub
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'  # اختر إصدار PHP الذي تريد استخدامه
+
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'cloudtime'  # اسم تطبيقك في Azure App Service
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: '.'  # نشر كل الملفات الموجودة في المستودع
