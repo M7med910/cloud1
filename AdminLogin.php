@@ -1,9 +1,9 @@
 <?php
 session_start();
-$host = 'sql200.infinityfree.com';  // استخدام hostname الصحيح
-$dbname = 'if0_38543174_my_db';    // اسم قاعدة البيانات التي قمت بإنشائها
-$username = 'if0_38543174';         // اسم المستخدم لقاعدة البيانات
-$password = 'MDH6WuEkvPyL';        // كلمة المرور لقاعدة البيانات
+$host = 'n11111111.mysql.database.azure.com';
+$dbname = 'newschema';
+$username = 'm';
+$password = '11111111nN';       // كلمة المرور لقاعدة البيانات
 
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
