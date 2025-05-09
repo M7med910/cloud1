@@ -1,0 +1,637 @@
+<?php
+session_start();
+
+require 'track-visit.php';
+
+if (isset($_SESSION['user_id'])) {
+    $host = 'sql200.infinityfree.com';
+    $dbname = 'if0_38543174_my_db';
+    $username = 'if0_38543174';
+    $password = 'MDH6WuEkvPyL';
+    
+    $conn = new mysqli($host, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("فشل الاتصال بالقاعدة: " . $conn->connect_error);
+    }
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT name FROM user WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($name);
+    $stmt->fetch();
+    $stmt->close();
+    $conn->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>سياسة الخصوصية | منصة المزادات</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
+    <link rel="shortcut icon" href="icon/favicon.ico">
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="سياسة الخصوصية لمنصة المزادات - نحمي بياناتك الشخصية ونضمن سرية معلوماتك">
+    <meta property="og:title" content="سياسة الخصوصية | منصة المزادات">
+    <meta property="og:description" content="تعرف على كيفية جمع وحماية بياناتك الشخصية على منصتنا">
+    <meta property="og:image" content="https://ebidzones.com/icon/icon22new.png">
+    <meta property="og:url" content="https://ebidzones.com/privacy.php">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <style>
+        :root {
+            --primary-color: #064635;
+            --secondary-color: #519259;
+            --accent-color: #F0BB62;
+            --light-color: #F4EEA9;
+            --dark-color: #042f2e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: clamp(30px, 8vw, 40px);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1.5rem);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3e7a4a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #e0a84d;
+            transform: translateY(-2px);
+        }
+        
+        .search-container {
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+            border-radius: 50px;
+            border: none;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(81, 146, 89, 0.3);
+        }
+        
+        .welcome-message {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            color: white;
+        }
+        
+        .welcome-message i {
+            color: var(--accent-color);
+        }
+        
+        /* Sections */
+        .section {
+            padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: clamp(1.5rem, 5vw, 3rem);
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: clamp(0.5rem, 2vw, 1rem) auto 0;
+            border-radius: 2px;
+        }
+        
+        /* Privacy Policy Content */
+        .privacy-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            line-height: 1.8;
+        }
+        
+        .privacy-content h3 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .privacy-content h4 {
+            color: var(--dark-color);
+            margin: 1.5rem 0 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .privacy-content p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .privacy-content ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .privacy-content ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .last-updated {
+            text-align: left;
+            font-style: italic;
+            color: #666;
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        
+        /* Footer */
+        .main-footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 1.5rem);
+            margin-top: auto;
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 30vw, 200px), 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .footer-col h4 {
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            margin-bottom: clamp(0.75rem, 3vw, 1.5rem);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
+        }
+        
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+        }
+        
+        .footer-col a:hover {
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: clamp(0.5rem, 2vw, 1rem);
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: clamp(1.5rem, 5vw, 3rem);
+            padding-top: clamp(0.75rem, 3vw, 1.5rem);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            
+            .header-top {
+                order: 1;
+                flex-wrap: nowrap;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            .auth-buttons {
+                gap: 1rem;
+                flex-wrap: nowrap;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .header-container {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            
+            .search-container {
+                order: 2;
+                width: auto;
+                flex-grow: 1;
+                margin: 0 2rem;
+            }
+        }
+        
+        /* Touch improvements for mobile */
+        @media (hover: none) {
+            .btn:hover, 
+            .footer-col a:hover,
+            .social-links a:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="main-header">
+    <div class="header-container">
+        <div class="header-top">
+            <div class="logo-container">
+                <img src="logo/png/logo-no-background.png" alt="منصة المزادات" class="logo">
+            </div>
+            
+            <div class="nav-container">
+                <nav class="auth-buttons">
+                    <?php if (isset($name)): ?>
+                        <span class="welcome-message">
+                            <i class="fas fa-user-circle"></i>
+                            مرحباً، <?php echo htmlspecialchars($name); ?>
+                        </span>
+                        <a href="profile.php" class="btn btn-outline">
+                            <i class="fas fa-user"></i> <span class="btn-text">الملف الشخصي</span>
+                        </a>
+                        <a href="test2.html" class="btn btn-accent">
+                            <i class="fas fa-plus"></i> <span class="btn-text">إضافة مزاد</span>
+                        </a>
+                        <a href="logout.php" class="btn btn-primary">
+                            <i class="fas fa-sign-out-alt"></i> <span class="btn-text">تسجيل خروج</span>
+                        </a>
+                    <?php else: ?>
+                        <a href="OTP.php" class="btn btn-outline">
+                            <i class="fas fa-sign-in-alt"></i> <span class="btn-text">تسجيل الدخول</span>
+                        </a>
+                        <a href="SignUp.php" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> <span class="btn-text">إنشاء حساب</span>
+                        </a>
+                    <?php endif; ?>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="ابحث في الموقع...">
+        </div>
+    </div>
+</header>
+    
+<!-- Privacy Policy Section -->
+<section class="section animate-fade" style="animation-delay: 0.1s">
+    <h2 class="section-title">سياسة الخصوصية</h2>
+    
+    <div class="privacy-content animate-fade" style="animation-delay: 0.2s">
+        <h3>مقدمة</h3>
+        <p>نرحب بكم في منصة المزادات. نحن ندرك أهمية الخصوصية ونوليها أولوية قصوى. تشرح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا وحماية معلوماتكم الشخصية عند استخدامكم لمنصتنا.</p>
+        
+        <h3>المعلومات التي نجمعها</h3>
+        <p>قد نجمع أنواعاً مختلفة من المعلومات عند استخدامك لخدماتنا، بما في ذلك:</p>
+        <ul>
+            <li><strong>المعلومات الشخصية:</strong> الاسم، البريد الإلكتروني، رقم الهاتف، العنوان، وغيرها من المعلومات التي تقدمها عند التسجيل أو إنشاء حساب.</li>
+            <li><strong>معلومات المعاملات:</strong> تفاصيل المزادات التي تشارك فيها، والمشتريات، والمبيعات، وطرق الدفع.</li>
+            <li><strong>معلومات الجهاز والتقنية:</strong> عنوان IP، نوع المتصفح، إعدادات اللغة، نظام التشغيل، وغيرها من المعلومات التقنية.</li>
+            <li><strong>معلومات الاستخدام:</strong> كيفية تفاعلك مع المنصة، الصفحات التي تزورها، الميزات التي تستخدمها.</li>
+        </ul>
+        
+        <h3>كيف نستخدم معلوماتك</h3>
+        <p>نستخدم المعلومات التي نجمعها لأغراض متعددة، بما في ذلك:</p>
+        <ul>
+            <li>توفير خدمات المنصة والمحافظة عليها</li>
+            <li>تحسين تجربة المستخدم وتخصيصها</li>
+            <li>معالجة المعاملات وإدارة المزادات</li>
+            <li>التواصل مع المستخدمين بشأن حساباتهم أو المعاملات</li>
+            <li>تحليل استخدام المنصة وتحسين خدماتنا</li>
+            <li>منع الاحتيال وإساءة الاستخدام</li>
+            <li>الامتثال للالتزامات القانونية</li>
+        </ul>
+        
+        <h3>حماية المعلومات</h3>
+        <p>نحن نستخدم إجراءات أمنية تقنية وإدارية صارمة لحماية معلوماتك الشخصية من الوصول غير المصرح به أو التعديل أو الإفشاء أو التدمير. تشمل هذه الإجراءات:</p>
+        <ul>
+            <li>تشفير البيانات أثناء النقل والتخزين</li>
+            <li>مراجعات أمنية منتظمة لأنظمتنا</li>
+            <li>تقييد الوصول إلى المعلومات الشخصية للموظفين الذين يحتاجون إليها لأداء عملهم</li>
+            <li>تدريب الموظفين على ممارسات الخصوصية والأمن</li>
+        </ul>
+        
+        <h3>مشاركة المعلومات مع أطراف ثالثة</h3>
+        <p>لا نبيع أو نؤجر معلوماتك الشخصية إلى أطراف ثالثة. ومع ذلك، قد نشارك المعلومات في الحالات التالية:</p>
+        <ul>
+            <li>مع مزودي الخدمة الذين يعملون نيابة عننا (مثل معالجة الدفع، الاستضافة، التحليلات)</li>
+            <li>عندما يكون ذلك مطلوباً بموجب القانون أو استجابة لطلب قانوني صالح</li>
+            <li>لحماية حقوقنا أو ممتلكاتنا أو سلامة مستخدمينا أو الجمهور</li>
+            <li>في حالة اندماج أو بيع أو نقل أصول الشركة</li>
+        </ul>
+        
+        <h3>ملفات تعريف الارتباط (Cookies)</h3>
+        <p>نستخدم ملفات تعريف الارتباط وتقنيات مماثلة لتعزيز تجربتك على منصتنا. تتيح لنا هذه التقنيات:</p>
+        <ul>
+            <li>تذكر تفضيلاتك وإعداداتك</li>
+            <li>تحليل كيفية استخدام المنصة</li>
+            <li>تقديم إعلانات مخصصة (إذا كان ذلك ينطبق)</li>
+        </ul>
+        <p>يمكنك التحكم في ملفات تعريف الارتباط من خلال إعدادات المتصفح، ولكن تعطيلها قد يؤثر على وظائف معينة في المنصة.</p>
+        
+        <h3>حقوقك في الخصوصية</h3>
+        <p>لديك حقوق معينة فيما يتعلق ببياناتك الشخصية، بما في ذلك:</p>
+        <ul>
+            <li><strong>حق الوصول:</strong> يمكنك طلب نسخة من معلوماتك الشخصية التي نحتفظ بها.</li>
+            <li><strong>حق التصحيح:</strong> يمكنك تحديث أو تصحيح معلوماتك غير الدقيقة.</li>
+            <li><strong>حق الحذف:</strong> يمكنك طلب حذف معلوماتك الشخصية في ظروف معينة.</li>
+            <li><strong>حق الاعتراض:</strong> يمكنك الاعتراض على معالجة بياناتك في حالات معينة.</li>
+        </ul>
+        <p>لتنفيذ أي من هذه الحقوق، يرجى الاتصال بنا عبر معلومات التواصل المذكورة أدناه.</p>
+        
+        <h3>التغييرات على سياسة الخصوصية</h3>
+        <p>قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنخطركم بأي تغييرات جوهرية عن طريق نشر الإشعار على المنصة أو إرسال إشعار مباشر إليكم. ننصحك بمراجعة هذه السياسة بشكل دوري للبقاء على اطلاع.</p>
+        
+        <h3>اتصل بنا</h3>
+        <p>إذا كانت لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه أو ممارساتنا المتعلقة بالخصوصية، يرجى الاتصال بنا عبر:</p>
+        <ul>
+            <li>البريد الإلكتروني: <a href="mailto:privacy@ebidzones.com">privacy@ebidzones.com</a></li>
+            <li>الهاتف: <a href="tel:+966112345678">+966 11 234 5678</a></li>
+            <li>العنوان: المملكة العربية السعودية، الرياض، حي المروج، شارع الملك فهد</li>
+        </ul>
+        
+        <div class="last-updated">آخر تحديث: ١ يناير ٢٠٢٣</div>
+    </div>
+</section>
+    
+<!-- Footer -->
+<footer class="main-footer animate-fade" style="animation-delay: 0.3s">
+    <div class="footer-container">
+        <div class="footer-col">
+            <img src="logo/png/logo-no-background.png" alt="منصة المزادات" style="height: clamp(30px, 8vw, 40px); margin-bottom: 1rem;">
+            <p style="font-size: clamp(0.8rem, 3vw, 0.9rem);">منصة المزادات الرائدة لبيع وشراء كل شيء بأفضل الأسعار</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer-col">
+            <h4>روابط سريعة</h4>
+            <ul>
+                <li><a href="index.php">الصفحة الرئيسية</a></li>
+                <li><a href="CarsPage.php">مزادات السيارات</a></li>
+                <li><a href="RealEstatePage.php">مزادات العقارات</a></li>
+                <li><a href="ElectronicsPage.php">مزادات الإلكترونيات</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>حسابي</h4>
+            <ul>
+                <li><a href="profile.php">الملف الشخصي</a></li>
+                <li><a href="#">مزاداتي</a></li>
+                <li><a href="#">المزايدات</a></li>
+                <li><a href="#">الإشعارات</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>الدعم</h4>
+            <ul>
+                <li><a href="faq.php">الأسئلة الشائعة</a></li>
+                <li><a href="contact.php">اتصل بنا</a></li>
+                <li><a href="privacy.php">سياسة الخصوصية</a></li>
+                <li><a href="#">الشروط والأحكام</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="copyright">
+        &copy; <?php echo date('Y'); ?> منصة المزادات. جميع الحقوق محفوظة.
+    </div>
+</footer>
+    
+<script>
+    // Simple animation on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = document.querySelectorAll('.animate-fade');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.style.opacity = '1';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animateElements.forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Improve touch experience on mobile
+        const buttons = document.querySelectorAll('.btn');
+        
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    });
+</script>
+</body>
+</html>
