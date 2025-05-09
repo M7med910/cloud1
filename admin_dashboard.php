@@ -7,6 +7,7 @@ require 'visit-count.php';
 
 $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
+port=3306;
 $username = 'm';
 $password = '11111111nN';
 
