@@ -9,9 +9,7 @@ $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
 $username = 'm@n11111111.mysql.database.azure.com';
 $password = '11111111nN';
-catch (PDOException $e) {
-    die("فشل الاتصال بقاعدة البيانات: " . $e->getMessage());
-}
+
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
