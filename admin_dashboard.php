@@ -10,6 +10,7 @@ $dbname = 'newschema';
 port=3306;
 $username = 'm';
 $password = '11111111nN';
+ssl-mode=require;
 
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
