@@ -5,10 +5,10 @@ ini_set('display_errors', 1);
 session_start();
 
 // بيانات الاتصال بقاعدة البيانات
-$host = 'sql200.epizy.com'; // تأكد من أنه مطابق للوحة تحكم InfinityFree
-$dbname = 'if0_38543174_my_db';
-$username = 'if0_38543174';
-$password = 'MDH6WuEkvPyL';
+$host = 'n11111111.mysql.database.azure.com';
+$dbname = 'newschema';
+$username = 'm';
+$password = '11111111nN';
 
 // الاتصال باستخدام MySQLi
 $conn = new mysqli($host, $username, $password, $dbname);
