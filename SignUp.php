@@ -3,7 +3,7 @@ session_start();
 $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
 $username = 'm';
-$password = '11111111nN';      // كلمة المرور لقاعدة البيانات
+$password = '11111111nN';    // كلمة المرور لقاعدة البيانات
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
