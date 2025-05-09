@@ -5,10 +5,10 @@ error_reporting(E_ALL);
 session_start();
 
 // تعريف بيانات الاتصال
-$host = 'sql200.infinityfree.com';
-$dbname = 'if0_38543174_my_db';
-$username = 'if0_38543174';
-$password = 'MDH6WuEkvPyL';
+$host = 'n11111111.mysql.database.azure.com';
+$dbname = 'newschema';
+$username = 'm';
+$password = '11111111nN';
 
 // تحقق من الجلسة
 if (isset($_SESSION['user_id'])) {
