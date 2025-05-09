@@ -8,7 +8,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("11فشل الاتصال بقاعدة البيانات.");
+    die("فشل الاتصال بقاعدة البيانات.");
 }
 
 $ip = $_SERVER['REMOTE_ADDR'];
