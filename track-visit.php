@@ -1,0 +1,26 @@
+<?php
+$host = 'sql200.infinityfree.com';
+$dbname = 'if0_38543174_my_db';
+$username = 'if0_38543174';
+$password = 'MDH6WuEkvPyL';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("فشل الاتصال بقاعدة البيانات.");
+}
+
+$ip = $_SERVER['REMOTE_ADDR'];
+
+// تحقق هل هذا الـ IP زار اليوم بالفعل
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM visits WHERE ip_address = ? AND DATE(visit_time) = CURDATE()");
+$stmt->execute([$ip]);
+$already_visited = $stmt->fetchColumn();
+
+if ($already_visited == 0) {
+    // لم يُسجّل اليوم، نسجله الآن
+    $stmt = $pdo->prepare("INSERT INTO visits (ip_address) VALUES (?)");
+    $stmt->execute([$ip]);
+}
+?>
