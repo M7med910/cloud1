@@ -8,10 +8,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // الاتصال بقاعدة البيانات
-$host = 'sql200.infinityfree.com';
-$dbname = 'if0_38543174_my_db';
-$username = 'if0_38543174';
-$password = 'MDH6WuEkvPyL';
+$host = 'n11111111.mysql.database.azure.com';
+$dbname = 'newschema';
+$username = 'm';
+$password = '11111111nN';
 
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
