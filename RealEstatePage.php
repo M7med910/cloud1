@@ -9,7 +9,6 @@ $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'newschema';
 $username = 'm';
 $password = '11111111nN';
-
 // تحقق من الجلسة
 if (isset($_SESSION['user_id'])) {
     $conn = new mysqli($host, $username, $password, $dbname);
