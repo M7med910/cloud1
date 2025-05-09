@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require 'track-visit.php';
 
 if (isset($_SESSION['user_id'])) {
 $host = 'n11111111.mysql.database.azure.com';
