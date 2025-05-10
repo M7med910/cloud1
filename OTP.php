@@ -1,77 +1,54 @@
 <?php
 session_start();
 
-$host = 'n11111111.mysql.database.azure.com';
-$dbname = 'newschema';
-$username = 'm';
-$password = '11111111nN';
-
-$conn = new mysqli($host, $username, $password, $dbname);
-require 'vendor/autoload.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
+// حذف الاتصال بقاعدة البيانات
 
 $message = "";
 $show_otp_field = false; 
 $otp_success = false;
 
+// هذا الجزء من الكود لن يحتاج للاتصال بقاعدة البيانات
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    // تسجيل الدخول هنا بدون التحقق من البيانات
+    $_SESSION['user_id'] = rand(1000, 9999); // استخدام رقم عشوائي كـ user_id كمثال
 
-    $stmt = $conn->prepare("SELECT user_id, password, role FROM user WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($user_id, $hashed_password, $role);
-    $stmt->fetch();
+    // إرسال OTP وتوجيه المستخدم إلى صفحة Chotp.php
+    $otp = rand(100000, 999999);
+    $_SESSION['otp'] = $otp;
+    $_SESSION['otp_email'] = $_POST['email']; // استخدام البريد المدخل كـ email
+    $_SESSION['otp_sent'] = true;
+    $_SESSION['otp_time'] = time();  // تخزين الوقت الذي تم فيه إرسال OTP
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        $_SESSION['user_id'] = $user_id;
+    // إرسال البريد الإلكتروني مع رمز التحقق
+    require 'vendor/autoload.php';
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 
-        // إرسال OTP وتوجيه المستخدم إلى صفحة Chotp.php
-        $otp = rand(100000, 999999);
-        $_SESSION['otp'] = $otp;
-        $_SESSION['otp_email'] = $email;
-        $_SESSION['otp_sent'] = true;
-        $_SESSION['otp_time'] = time();  // تخزين الوقت الذي تم فيه إرسال OTP
-        $stmt = $conn->prepare("UPDATE user SET otp = ? WHERE user_id = ?");
-        $stmt->bind_param("si", $otp, $user_id);
-        $stmt->execute();
+    $mail = new PHPMailer(true);
+    try {
+        $mail->CharSet = "UTF-8";
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'waleedksa130@gmail.com';
+        $mail->Password = 'mtblkbpekpdmodmk';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-        $mail = new PHPMailer(true);
-        try {
-            $mail->CharSet = "UTF-8";
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'waleedksa130@gmail.com';
-            $mail->Password = 'mtblkbpekpdmodmk';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            
-            $mail->setFrom('waleedksa130@gmail.com', 'E-BidZone');
-            $mail->addAddress($email);
-            $mail->Subject = 'رمز التحقق OTP';
-            $mail->Body = "رمز التحقق الخاص بك هو: $otp";
-            
-            if ($mail->send()) {
-                $_SESSION['message'] = "تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
-                header('Location: Chotp.php'); // الانتقال إلى صفحة Chotp.php
-                exit();
-            }
-        } catch (Exception $e) {
-            $message = "خطأ في إرسال البريد الإلكتروني: {$mail->ErrorInfo}";
+        $mail->setFrom('waleedksa130@gmail.com', 'E-BidZone');
+        $mail->addAddress($_POST['email']);
+        $mail->Subject = 'رمز التحقق OTP';
+        $mail->Body = "رمز التحقق الخاص بك هو: $otp";
+
+        if ($mail->send()) {
+            $_SESSION['message'] = "تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
+            header('Location: Chotp.php'); // الانتقال إلى صفحة Chotp.php
+            exit();
         }
-    } else {
-        $message = "البريد الإلكتروني أو كلمة المرور غير صحيحة!";
+    } catch (Exception $e) {
+        $message = "خطأ في إرسال البريد الإلكتروني: {$mail->ErrorInfo}";
     }
-    $stmt->close();
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -142,50 +119,45 @@ $conn->close();
             color: red;
         }
 
-        /* تنسيق الرسالة الحمراء عند حدوث خطأ */
         .alert-danger {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
             padding: 10px;
             border-radius: 5px;
-            margin-bottom: 20px; /* إضافة مساحة أسفل الرسالة */
+            margin-bottom: 20px;
         }
 
-        /* تنسيق رابط "نسيت كلمة المرور" */
         .forgot-password {
             display: block;
             margin-top: 15px;
-            color: #007bff; /* لون أزرق */
+            color: #007bff;
             text-decoration: none;
             font-weight: 600;
         }
 
         .forgot-password:hover {
-            text-decoration: underline; /* تأثير عند المرور على الرابط */
+            text-decoration: underline;
         }
 
-        /* وضع الأزرار تحت بعض */
         .btn-container {
-            display: block; /* التأكد من أن الأزرار تحت بعض */
+            display: block;
             margin-top: 20px;
         }
 
         .btn-container .btn {
-            margin-top: 10px; /* إضافة مسافة بين الأزرار */
+            margin-top: 10px;
         }
 
         .admin-login-btn {
-            background-color: #007bff; /* لون مختلف */
+            background-color: #007bff;
         }
     </style>
 </head>
 <body>
-    <!-- نموذج تسجيل الدخول -->
     <div class="login-container">
         <h2>تسجيل الدخول</h2>
         
-        <!-- عرض الرسالة فقط إذا كانت غير فارغة (أي حدث خطأ) -->
         <?php if (!empty($message)) { echo "<p class='alert alert-danger'>$message</p>"; } ?>
         
         <form method="POST" action="">
@@ -198,15 +170,12 @@ $conn->close();
                 <input type="password" class="form-control" name="password" required>
             </div>
             
-            <!-- عرض الأزرار تحت بعض -->
             <div class="btn-container">
                 <button type="submit" name="login" class="btn btn-primary">تسجيل الدخول</button>
-                <a href="AdminLogin.php" class="btn admin-login-btn">تسجيل دخول المسؤولين</a> <!-- زر جديد للتوجه إلى صفحة تسجيل دخول المسؤول -->
+                <a href="AdminLogin.php" class="btn admin-login-btn">تسجيل دخول المسؤولين</a>
             </div>
-            
         </form>
         <a href="SignUp.php" class="forgot-password">حساب جديد</a>
-        <!-- رابط "نسيت كلمة المرور" -->
         <a href="reset-password.php" class="forgot-password">نسيت كلمة المرور؟</a>
     </div>
 </body>
