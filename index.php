@@ -5,11 +5,10 @@ require 'track-visit.php';
 if (isset($_SESSION['user_id'])) {
 $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'tr1';
-$username = 'm';
+$username = 'm@n11111111'; // لاحظ اسم المستخدم الكامل مع السيرفر
 $password = '11111111nN';
-ssl: {
-ca: fs.readFileSync('./DigiCertGlobalRootCA.crt.pem')  // تأكد من وجود الشهادة
-  }
+$port = 3306;
+$ssl_ca = './DigiCertGlobalRootCA.crt.pem'; // تأكد من وجود الملف
     
     $conn = new mysqli($host, $username, $password, $dbname,3306,MYSQLI_CLIENT_SSL);
     if ($conn->connect_error) {
