@@ -1,6 +1,6 @@
 <?php
 $host = 'n11111111.mysql.database.azure.com';
-$dbname = 'tsest';
+$dbname = 'newschema';
 $username = 'm@n11111111';
 $password = '11111111nN';
 try {
