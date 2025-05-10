@@ -1,6 +1,6 @@
 <?php
 $host = 'n11111111.mysql.database.azure.com';
-$dbname = 'tr1';
+$dbname = 'n11111111';
 $username = 'm';
 $password = '11111111nN';
 
