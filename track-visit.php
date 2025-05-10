@@ -4,7 +4,7 @@ $dbname = 'n11111111';
 $username = 'm';
 $password = '11111111nN';
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $dbname,3306,MYSQLI_CLIENT_SSL);
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
