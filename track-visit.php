@@ -4,7 +4,7 @@ $dbname = 'newschema';
 $username = 'm';
 $password = '11111111nN';
 
-$conn = new mysqli($host, $username, $password, $dbname, 3306, '/path/to/ssl-cert.pem');
+$conn = new mysqli($host, $username, $password, $dbname, 3306);
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
