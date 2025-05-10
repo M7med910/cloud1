@@ -4,7 +4,7 @@ require 'track-visit.php';
 
 if (isset($_SESSION['user_id'])) {
 $host = 'n11111111.mysql.database.azure.com';
-$dbname = 'tr1';
+$dbname = 'newschema';
 $username = 'm';
 $password = '11111111nN';
     
