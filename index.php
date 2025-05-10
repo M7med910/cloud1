@@ -8,7 +8,7 @@ $dbname = 'n11111111';
 $username = 'm';
 $password = '11111111nN';
     
-    $conn = new mysqli($host, $username, $password, $dbname);
+    $conn = new mysqli($host, $username, $password, $dbname,3306,MYSQLI_CLIENT_SSL);
     if ($conn->connect_error) {
         die("فشل الاتصال بالقاعدة: " . $conn->connect_error);
     }
