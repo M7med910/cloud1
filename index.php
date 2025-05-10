@@ -7,6 +7,9 @@ $host = 'n11111111.mysql.database.azure.com';
 $dbname = 'tr1@n11111111';
 $username = 'm';
 $password = '11111111nN';
+ssl: {
+ca: fs.readFileSync('./DigiCertGlobalRootCA.crt.pem')  // تأكد من وجود الشهادة
+  }
     
     $conn = new mysqli($host, $username, $password, $dbname,3306,MYSQLI_CLIENT_SSL);
     if ($conn->connect_error) {
